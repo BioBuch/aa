@@ -1,8 +1,7 @@
-python -m ensurepip
-pip install tensorflow==2.4 
-pip install keras==2.4
-pip install opencv-python
-pip install mtcnn  
-pip install pandas
-pip install numpy
-pip install flask
+pip3 install tensorflow==2.4 
+pip3 install keras==2.4
+pip3 install opencv-python
+pip3 install mtcnn  
+pip3 install pandas
+pip3 install numpy
+pip3 install flask
