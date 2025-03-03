@@ -1,22 +1,26 @@
 from flask import Flask, request, jsonify
-import base64
-from io import BytesIO
-from PIL import Image
+from deepface import DeepFace
+import os
 
 app = Flask(__name__)
 
-@app.route('/analyze', methods=['POST'])
-def analyze():
-    data = request.json
-    if 'image' in data:
-        image_data = base64.b64decode(data['image'])
-        image = Image.open(BytesIO(image_data))
+UPLOAD_FOLDER = "uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-        # Here you would run your emotion analysis (mock response for now)
-        mood = "happy"  # Replace with your actual analysis logic
+@app.route("/analyze_emotion", methods=["POST"])
+def analyze_emotion():
+    if "image" not in request.files:
+        return jsonify({"error": "No image uploaded"}), 400
 
-        return jsonify({'mood': mood})
-    return jsonify({'error': 'No image provided'}), 400
+    image = request.files["image"]
+    image_path = os.path.join(UPLOAD_FOLDER, image.filename)
+    image.save(image_path)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+    try:
+        result = DeepFace.analyze(image_path, actions=["emotion"])
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=False)

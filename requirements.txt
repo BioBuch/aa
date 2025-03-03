@@ -1,3 +1,7 @@
-Flask==2.0.1
-gunicorn==20.1.0
-pillow==8.2.0
+pip install tensorflow==2.4 
+pip install keras==2.4
+pip install opencv-python
+pip install mtcnn  
+pip install pandas
+pip install numpy
+pip install flask
